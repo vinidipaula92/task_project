@@ -1,0 +1,45 @@
+FROM php:7.4-apache
+
+# Config do apache
+COPY apache2.conf /etc/apache2/
+
+# Ajuste de php.init
+RUN sed -ri -e 's/max_execution_time\s=\s[0-9]*/max_execution_time = 0/g' /usr/local/etc/php/php.ini-production 
+
+# Pacotes PHP para instala e atualizar
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get install -y vim iputils-ping libpng-dev zlib1g-dev libzip-dev libxml2-dev git curl && \
+    docker-php-ext-install mysqli pdo pdo_mysql zip gd xml
+
+# Ativando os módulos do apache2
+RUN a2enmod rewrite actions
+
+# Configurando o xdebug
+RUN pecl install xdebug-3.1.0 && docker-php-ext-enable xdebug
+COPY xdebug_frontend.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
+
+# Permissões do projeto
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
+# Instalação de composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN curl -s https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
+
+# Instalação de Node e NPM
+RUN apt-get update && apt-get install -y \
+    nodejs \
+    npm
+
+# Adicionando o diretório global do npm ao PATH
+ENV PATH="/root/.npm-global/bin:${PATH}"
+
+# Instação dos pacotes
+# WORKDIR /var/www/html
+# COPY package.json package-lock.json ./
+# RUN npm install 
+
+# Diretório 
+WORKDIR /var/www/html

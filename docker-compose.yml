@@ -1,0 +1,64 @@
+services:
+  db_task:
+    container_name: db_task
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: tecsatask
+      MYSQL_ROOT_PASSWORD: 123
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  phpadmin_task:
+    container_name: phpadmin_task
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db_task
+    depends_on:
+      - db_task
+    links:
+      - db_task
+
+  projeto:
+    container_name: projeto
+    build:
+      context: .
+      dockerfile: Dockerfile.projeto
+    restart: always
+    ports:
+      - '8000:80'
+    volumes:
+      - ./projeto:/var/www/html
+      - type: 'bind'
+        source: '${PWD}/tmp'
+        target: '/tmp/xdebug'
+    depends_on:
+      - db_task
+    links:
+      - db_task
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  nginx_task:
+    container_name: nginx_task
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    restart: always
+    ports:
+      - '80:80'
+    depends_on:
+      - db_task
+      - phpadmin_task
+      - projeto
+    links:
+      - db_task
+      - phpadmin_task
+      - projeto

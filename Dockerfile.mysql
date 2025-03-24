@@ -1,0 +1,3 @@
+FROM mysql:8.0-debian
+COPY database.sql /tmp/database.sql
+RUN apt-get update && apt-get -y upgrade && apt-get install -y vim iputils-ping
