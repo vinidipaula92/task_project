@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskTableBody = document.getElementById('taskTableBody');
   let tasks = [];
 
-  function loadTasks() {
+  const loadTasks = () => {
     tasks = [
       { id: 1, name: 'Task 1', status: 'Pendente' },
       { id: 2, name: 'Task 2', status: 'Concluída' },
@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 6, name: 'Task 6', status: 'Concluída' },
     ];
     renderTasks(tasks);
-  }
+  };
 
-  function renderTasks(taskList) {
+  const renderTasks = (taskList) => {
     taskTableBody.innerHTML = '';
     taskList.forEach((task) => {
       const row = document.createElement('tr');
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       taskTableBody.appendChild(row);
     });
-  }
+  };
 
-  window.filterTasks = (status) => {
+  const filterTasks = (status) => {
     if (status === 'All') {
       renderTasks(tasks);
     } else {
