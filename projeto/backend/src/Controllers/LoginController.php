@@ -57,4 +57,25 @@ class LoginController
       $response->getBody()->write(json_encode($user));
       return $response;
     }
+
+    public function login(Request $request, Response $response): Response
+    {
+        $data = json_decode($request->getBody()->getContents(), true);
+        $password = md5($data['password']);
+        $query = $this->db_connection->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
+        $query->bind_param("ss", $data['email'], $password);
+        $query->execute();
+        $result = $query->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $response->getBody()->write(json_encode(['token' => $user['token']]));
+            return $response;
+        } else {
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $response->getBody()->write(json_encode(['error' => 'Usuário ou senha inválidos']));
+            return $response->withStatus(401);
+        }
+    }
 }

@@ -51,4 +51,8 @@ return function (App $app) {
   $app->post('/users', function (Request $request, Response $response) use ($loginController) {
       return $loginController->createUser($request, $response);
   });
+
+  $app->post('/login', function (Request $request, Response $response) use ($loginController) {
+    return $loginController->login($request, $response);
+  });
 };
