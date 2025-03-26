@@ -16,6 +16,7 @@ async function registerUser(data) {
 
     await response.json();
     alert('Cadastro realizado com sucesso!');
+    window.location.href = 'http://localhost/frontend/src/login.html';
   } catch (error) {
     alert('Erro ao cadastrar usuário. Tente novamente.');
   }

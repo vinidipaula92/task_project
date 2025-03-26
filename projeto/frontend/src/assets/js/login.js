@@ -10,6 +10,7 @@ async function loginUser(data) {
 
     await response.json();
     alert('Login realizado com sucesso!');
+    window.location.href = 'http://localhost/frontend/src/main.html';
   } catch (error) {
     alert('Erro ao realizar login. Tente novamente.');
   }

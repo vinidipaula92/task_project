@@ -6,7 +6,7 @@
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel='stylesheet' href='../node_modules/bootstrap/dist/css/bootstrap.min.css'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel='stylesheet' type='text/css' href='./assets/css/tyle.css'>
+  <link rel='stylesheet' type='text/css' href='./assets/css/style.css'>
 </head>
 <body>
   <div class="container">
@@ -16,10 +16,10 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <button class="btn btn-link nav-link" onclick="filterTasks('Pendente')">Pendente</button>
+              <button class="btn btn-link nav-link" onclick="filterTasks('pendente')">Pendente</button>
             </li>
             <li class="nav-item">
-              <button class="btn btn-link nav-link" onclick="filterTasks('Concluída')">Concluídas</button>
+              <button class="btn btn-link nav-link" onclick="filterTasks('concluida')">Concluídas</button>
             </li>
             <li class="nav-item">
               <button class="btn btn-link nav-link" onclick="filterTasks('All')">Todas</button>
@@ -58,6 +58,15 @@
     </table>
   </div>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./assets/js/script.js" type="module"></script>
+  <script type="module">
+    import { fetchTasks, filterTasks, updateTaskStatus, deleteTask, handleTaskFormSubmit } from './assets/js/tasks.js';
+
+    document.getElementById('taskForm').addEventListener('submit', handleTaskFormSubmit);
+    window.filterTasks = filterTasks;
+    window.updateTaskStatus = updateTaskStatus;
+    window.deleteTask = deleteTask;
+
+    fetchTasks();
+  </script>
 </body>
 </html>

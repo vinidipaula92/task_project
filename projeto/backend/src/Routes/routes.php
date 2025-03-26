@@ -34,6 +34,12 @@ return function (App $app) {
       return $taskController->deleteTask( $response, $args['id']);
   });
 
+  $app->get('/tasks/status', function (Request $request, Response $response) use ($taskController) {
+    $queryParams = $request->getQueryParams();
+    $status = $queryParams['status'] ?? null;
+    return $taskController->getTasksByStatus($response, $status);
+  });
+
   $app->get('/users', function (Request $request, Response $response) use ($loginController) {
     // $token = $request->getHeaderLine('Authorization');
     // if (empty($token)) {

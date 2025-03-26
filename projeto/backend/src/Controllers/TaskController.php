@@ -87,4 +87,25 @@ class TaskController
         return $response->withStatus(500);
       }
     }
+
+    public function getTasksByStatus(Response $response, $status): Response
+    {
+      if ($status === "All") {
+        return $this->getTasks($response);
+      } else {
+      $query = $this->db_connection->prepare("SELECT * FROM tasks WHERE status = ?");
+      $query->bind_param("s", $status);
+      $query->execute();
+      $result = $query->get_result();
+      }
+
+      $tasks = [];
+      while ($row = $result->fetch_assoc()) {
+          $tasks[] = $row;
+      }
+
+      $response = $response->withHeader('Content-Type', 'application/json');
+      $response->getBody()->write(json_encode($tasks));
+      return $response;
+    }
 }
