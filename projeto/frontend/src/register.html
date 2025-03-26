@@ -14,57 +14,27 @@
     <h1 class="text-center m-4">Faça seu cadastro</h1>
     <form id="loginForm" class="row g-3">
       <div class="mb-2">
-        <label for="email" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="email" placeholder="nome@exemplo.com">
-      </div>
-      <div class="mb-2">
         <label for="nome" class="form-label">Nome completo</label>
         <input type="nome" class="form-control" id="nome" placeholder="John Doe">
+      </div>
+      <div class="mb-2">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="email" placeholder="nome@exemplo.com">
       </div>
       <div class="mb-2">
         <label for="password" class="form-label">Senha</label>
         <input type="password" class="form-control" id="password" placeholder="Digite sua senha">
       </div>
       <div class="mb-2">
-        <label for="confirm" class="form-label">Confirmar senha</label>
-        <input type="password" class="form-control" id="confirm" placeholder="Confirme sua senha">
+        <label for="confirmPassword" class="form-label">Confirmar senha</label>
+        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme sua senha">
       </div>
       <div class="col-12">
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button id="registerBtn" type="button" class="btn btn-primary">Cadastrar</button>
       </div>
     </form>
   </div>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./assets/teste.js"></script>
-  <script src="./assets/script.js"></script>
-  <script type="module">
-    import { validateEmail, validatePassword, validateConfirmPassword } from './assets/validation.js';
-
-    const registerForm = document.getElementById('loginForm');
-    registerForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirm').value;
-
-      if (!validateEmail(email)) {
-        alert('Por favor, insira um e-mail válido.');
-        return;
-      }
-
-      if (!validatePassword(password)) {
-        alert('A senha deve ter pelo menos 6 caracteres.');
-        return;
-      }
-
-      if (!validateConfirmPassword(password, confirmPassword)) {
-        alert('As senhas não coincidem.');
-        return;
-      }
-
-      alert('Cadastro realizado com sucesso!');
-    });
-  </script>
+  <script src="./assets/default.js" type="module"></script>
 </body>
 </html>
