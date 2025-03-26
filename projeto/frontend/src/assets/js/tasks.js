@@ -74,7 +74,7 @@ const filterTasks = async (status) => {
 };
 
 const renderTasks = (taskList) => {
-  taskTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+  taskTableBody.innerHTML = '';
   taskList.forEach((task) => {
     const row = document.createElement('tr');
     row.innerHTML = `
