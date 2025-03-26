@@ -58,19 +58,18 @@ class TaskController
 
     public function updateTask(Request $request, Response $response, $id): Response
     {
-        
-        $data = json_decode($request->getBody()->getContents(), true);
-        $query = $this->db_connection->prepare("UPDATE tasks SET title = ?, description = ?, status = ?, updated_at = now() WHERE id = ?");
-        $query->bind_param("sssi", $data['title'], $data['description'], $data['status'], $id);
-        if ($query->execute()) {
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $response->getBody()->write(json_encode(['message' => 'Tarefa atualizada com sucesso']));
-            return $response;
-        } else {
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $response->getBody()->write(json_encode(['error' => 'Falha ao atualizar a tarefa']));
-            return $response->withStatus(500);
-        }
+      $data = json_decode($request->getBody()->getContents(), true);
+      $query = $this->db_connection->prepare("UPDATE tasks SET title = ?, description = ?, status = ?, updated_at = now() WHERE id = ?");
+      $query->bind_param("sssi", $data['title'], $data['description'], $data['status'], $id);
+      if ($query->execute()) {
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $response->getBody()->write(json_encode(['message' => 'Tarefa atualizada com sucesso']));
+          return $response;
+      } else {
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $response->getBody()->write(json_encode(['error' => 'Falha ao atualizar a tarefa']));
+          return $response->withStatus(500);
+      }
     }
 
     public function deleteTask(Response $response, $id): Response
@@ -107,5 +106,20 @@ class TaskController
       $response = $response->withHeader('Content-Type', 'application/json');
       $response->getBody()->write(json_encode($tasks));
       return $response;
+    }
+
+    public function completeTask(Request $request, Response $response, $id): Response
+    {
+      $query = $this->db_connection->prepare("UPDATE tasks SET status = 'concluida' WHERE id = ?");
+      $query->bind_param("i", $id);
+      if ($query->execute()) {
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $response->getBody()->write(json_encode(['message' => 'Tarefa concluída com sucesso']));
+          return $response;
+      } else {
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $response->getBody()->write(json_encode(['error' => 'Falha ao concluir a tarefa']));
+          return $response->withStatus(500);
+      }
     }
 }

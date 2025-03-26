@@ -28,7 +28,7 @@ const createTask = async (task) => {
   }
 };
 
-const updateTaskStatus = async (id, currentStatus) => {
+const completeTask = async (id, currentStatus) => {
   const newStatus = currentStatus === 'Pendente' ? 'Concluída' : 'Pendente';
   try {
     const response = await fetch(`http://localhost/backend/tasks/${id}`, {
@@ -70,12 +70,14 @@ const renderTasks = (taskList) => {
     row.innerHTML = `
       <th scope="row">${task.id}</th>
       <td>${task.title}</td>
-      <td>${task.status}</td>
+      <td>${task.description}</td>
+      <td>${new Date(task.created_at).toLocaleDateString('pt-BR')}</td>
+      <td>${task.status.toUpperCase()}</td>
       <td>
-        <button class="btn btn-success btn-sm" onclick="updateTaskStatus(${
-          task.id
-        }, '${task.status}')">
-          ${task.status === 'Pendente' ? 'Concluir' : 'Reabrir'}
+      <button class="btn btn-success btn-sm" onclick="completeTask(${
+        task.id
+      }, '${task.status}')">
+          ${task.status === 'pendente' ? 'Concluir' : 'Reabrir'}
         </button>
         <button class="btn btn-danger btn-sm" onclick="deleteTask(${
           task.id
@@ -102,14 +104,19 @@ const handleTaskFormSubmit = async (e) => {
   e.preventDefault();
   const taskName = document.getElementById('taskName').value;
   const taskStatus = document.getElementById('taskStatus').value;
-  await createTask({ title: taskName, status: taskStatus });
+  const taskDescription = document.getElementById('taskDescription').value;
+  await createTask({
+    title: taskName,
+    status: taskStatus,
+    description: taskDescription,
+  });
   document.getElementById('taskForm').reset();
 };
 
 export {
   fetchTasks,
   createTask,
-  updateTaskStatus,
+  completeTask,
   deleteTask,
   filterTasks,
   handleTaskFormSubmit,

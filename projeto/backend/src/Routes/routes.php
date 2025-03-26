@@ -28,7 +28,7 @@ return function (App $app) {
       return $taskController->createTask($request, $response);
   });
   $app->put('/tasks/{id}', function (Request $request, Response $response, $args) use ($taskController) {
-      return $taskController->updateTask($request, $response, $args['id']);
+      return $taskController->completeTask($request, $response, $args['id']);
   });
   $app->delete('/tasks/{id}', function (Request $request, Response $response, $args) use ($taskController) {
       return $taskController->deleteTask( $response, $args['id']);

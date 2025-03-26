@@ -30,11 +30,15 @@
     </nav>
     <h1 class="text-center m-4">Gerenciador de tarefas</h1>
     <form id="taskForm" class="row g-3">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label for="taskName" class="form-label">Nome da tarefa</label>
         <input type="text" class="form-control" id="taskName" placeholder="Entre com nome da sua tarefa" required>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-5">
+        <label for="taskDescription" class="form-label">Descrição da tarefa</label>
+        <input type="text" class="form-control" id="taskDescription" placeholder="Entre com a descrição da sua tarefa" required>
+      </div>
+      <div class="col-md-3">
         <label for="taskStatus" class="form-label">Status</label>
         <select id="taskStatus" class="form-select" required>
           <option value="Pendente">Pendente</option>
@@ -49,6 +53,8 @@
         <tr>
           <th scope="col">Nº</th>
           <th scope="col">Nome da tarefa</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Data de criação</th>
           <th scope="col">Status</th>
           <th scope="col">Ação</th>
         </tr>
@@ -59,11 +65,11 @@
   </div>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module">
-    import { fetchTasks, filterTasks, updateTaskStatus, deleteTask, handleTaskFormSubmit } from './assets/js/tasks.js';
+    import { fetchTasks, filterTasks, completeTask, deleteTask, handleTaskFormSubmit } from './assets/js/tasks.js';
 
     document.getElementById('taskForm').addEventListener('submit', handleTaskFormSubmit);
     window.filterTasks = filterTasks;
-    window.updateTaskStatus = updateTaskStatus;
+    window.completeTask = completeTask;
     window.deleteTask = deleteTask;
 
     fetchTasks();
