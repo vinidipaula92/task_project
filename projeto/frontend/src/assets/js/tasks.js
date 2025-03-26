@@ -61,33 +61,6 @@ const deleteTask = async (id) => {
   }
 };
 
-const renderTasks = (taskList) => {
-  console.log('taskList', taskList);
-
-  taskTableBody.innerHTML = '';
-  taskList.forEach((task) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <th scope="row">${task.id}</th>
-      <td>${task.title}</td>
-      <td>${task.description}</td>
-      <td>${new Date(task.created_at).toLocaleDateString('pt-BR')}</td>
-      <td>${task.status.toUpperCase()}</td>
-      <td>
-      <button class="btn btn-success btn-sm" onclick="completeTask(${
-        task.id
-      }, '${task.status}')">
-          ${task.status === 'pendente' ? 'Concluir' : 'Reabrir'}
-        </button>
-        <button class="btn btn-danger btn-sm" onclick="deleteTask(${
-          task.id
-        })">Excluir</button>
-      </td>
-    `;
-    taskTableBody.appendChild(row);
-  });
-};
-
 const filterTasks = async (status) => {
   try {
     const response = await fetch(
@@ -98,6 +71,48 @@ const filterTasks = async (status) => {
   } catch (error) {
     console.error('Erro ao filtrar tarefas:', error);
   }
+};
+
+const renderTasks = (taskList) => {
+  taskTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+  taskList.forEach((task) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <th scope="row">${task.id}</th>
+      <td>${task.title}</td>
+      <td>${task.description}</td>
+      <td>${new Date(task.created_at).toLocaleDateString('pt-BR')}</td>
+      <td>${task.status.toUpperCase()}</td>
+      <td>
+        <button class="btn btn-success btn-sm complete-task" data-id="${
+          task.id
+        }" data-status="${task.status}" ${
+      task.status !== 'pendente' ? 'disabled' : ''
+    }>
+          ${task.status === 'pendente' ? 'Concluir' : 'Concluído'}
+        </button>
+        <button class="btn btn-danger btn-sm delete-task" data-id="${task.id}">
+          Excluir
+        </button>
+      </td>
+    `;
+    taskTableBody.appendChild(row);
+  });
+
+  document.querySelectorAll('.complete-task').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const id = event.target.dataset.id;
+      const status = event.target.dataset.status;
+      completeTask(id, status);
+    });
+  });
+
+  document.querySelectorAll('.delete-task').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const id = event.target.dataset.id;
+      deleteTask(id);
+    });
+  });
 };
 
 const handleTaskFormSubmit = async (e) => {
@@ -113,6 +128,7 @@ const handleTaskFormSubmit = async (e) => {
   document.getElementById('taskForm').reset();
 };
 
+// Exporta as funções
 export {
   fetchTasks,
   createTask,

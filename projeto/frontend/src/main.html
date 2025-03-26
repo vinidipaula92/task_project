@@ -16,13 +16,13 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <button class="btn btn-link nav-link" onclick="filterTasks('pendente')">Pendente</button>
+              <button class="btn btn-link nav-link" id="filterPending">Pendente</button>
             </li>
             <li class="nav-item">
-              <button class="btn btn-link nav-link" onclick="filterTasks('concluida')">Concluídas</button>
+              <button class="btn btn-link nav-link" id="filterCompleted">Concluídas</button>
             </li>
             <li class="nav-item">
-              <button class="btn btn-link nav-link" onclick="filterTasks('All')">Todas</button>
+              <button class="btn btn-link nav-link" id="filterAll">Todas</button>
             </li>
           </ul>
         </div>
@@ -63,14 +63,16 @@
       </tbody>
     </table>
   </div>
+
   <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module">
-    import { fetchTasks, filterTasks, completeTask, deleteTask, handleTaskFormSubmit } from './assets/js/tasks.js';
+    import { fetchTasks, handleTaskFormSubmit, filterTasks } from './assets/js/tasks.js';
 
     document.getElementById('taskForm').addEventListener('submit', handleTaskFormSubmit);
-    window.filterTasks = filterTasks;
-    window.completeTask = completeTask;
-    window.deleteTask = deleteTask;
+
+    document.getElementById('filterPending').addEventListener('click', () => filterTasks('pendente'));
+    document.getElementById('filterCompleted').addEventListener('click', () => filterTasks('concluida'));
+    document.getElementById('filterAll').addEventListener('click', () => filterTasks('All'));
 
     fetchTasks();
   </script>
