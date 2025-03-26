@@ -92,6 +92,10 @@ Na sua máquina você deve ter:
 
 - Realizar o cadastro do usuário, logar e criar as tarefas.
 
+- Segue GIF abaixo da aplicação
+
+![Exemplo app front](images/task_manage.gif)
+
 </details>
 <h1 style="center">Obrigado pela visita ao meu repositório</h1>
 
